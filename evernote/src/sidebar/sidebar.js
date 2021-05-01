@@ -9,8 +9,8 @@ class SideBarComponent extends React.Component {
     constructor() {
         super();
         this.state = {
-            addingNote : false,
-            title : null
+            addingNote: false,
+            title: null
         };
     }
 
@@ -18,31 +18,31 @@ class SideBarComponent extends React.Component {
 
         const { notes, classes, selectedNoteIndex } = this.props;
 
-        if(notes) {
-            return(
-                <div className= {classes.SideBarComponent}>
-                    <Button 
-                    onClick={this.newNoteBtnClick}
-                    className={classes.newNoteBtn}>{this.state.addingNote ? ' Cancel' : 'New Note'}</Button>
+        if (notes) {
+            return (
+                <div className={classes.SideBarComponent}>
+                    <Button
+                        onClick={this.newNoteBtnClick}
+                        className={classes.newNoteBtn}>{this.state.addingNote ? ' Cancel' : 'New Note'}</Button>
                     {
-                        this.state.addingNote ? 
-                        <div>
-                            <input type='text'
-                                className={classes.newNoteInput}
-                                placeholder='Enter note title'
-                                onKeyUp={(e) => this.updateTitle(e.target.value)}>
+                        this.state.addingNote ?
+                            <div>
+                                <input type='text'
+                                    className={classes.newNoteInput}
+                                    placeholder='Enter note title'
+                                    onKeyUp={(e) => this.updateTitle(e.target.value)}>
                                 </input>
                                 <Button
-                                className={classes.newNoteSubmitBtn}
-                                onClick={this.newNote}>Submit Button
+                                    className={classes.newNoteSubmitBtn}
+                                    onClick={this.newNote}>Submit
                                 </Button>
-                        </div> :
-                        null
+                            </div> :
+                            null
                     }
                     <List>
                         {
-                            notes.map((note,index) => {
-                                return(
+                            notes.map((note, index) => {
+                                return (
                                     <div key={index}>
                                         <SidebarItemComponent
                                             note={note}
@@ -50,8 +50,8 @@ class SideBarComponent extends React.Component {
                                             selectedNoteIndex={selectedNoteIndex}
                                             selectNote={this.selectNote}
                                             deleteNote={this.deleteNote}>
-                                            </SidebarItemComponent>
-                                            <Divider></Divider>
+                                        </SidebarItemComponent>
+                                        <Divider></Divider>
                                     </div>
                                 )
                             })
@@ -60,25 +60,23 @@ class SideBarComponent extends React.Component {
                 </div>
             );
         } else {
-            return(<div>Add a note!</div>)
+            return (<div>Add a note!</div>)
         }
     }
 
     newNoteBtnClick = () => {
-        this.setState({title: null, addingNote: !this.state.addingNote });
+        this.setState({ title: null, addingNote: !this.state.addingNote });
     }
     updateTitle = (txt) => {
-        this.setState({title: txt})//(title: this.title)
+        this.setState({ title: txt })
     }
     newNote = () => {
-        console.log(this.state);
+        this.props.newNote(this.state.title);
+        this.setState({ title: null, addingNote: false });
     }
-    selectNote = (n,i) => {
-        this.props.selectNote(n,i);
-    }
-    deleteNote = () => {
-        console.log('Note deleted')
-    }
+    selectNote = (n, i) => this.props.selectNote(n, i);
+
+    deleteNote = (note) => this.props.deleteNote(note);
 }
 
 export default withStyles(styles)(SideBarComponent);
